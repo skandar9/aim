@@ -14,7 +14,7 @@ Team Member Management: The application allows the management of team members wi
 
 Contact Message Handling: The application includes a contact module that allows users to send messages to the organization. It provides a form for users to enter their name, email, phone number, and message. The messages are securely sent via email to the organization's designated email address for further communication.
 ## Contents
-### (Parts of my code)
+(Parts of my code)
 
 [Authentication](#authentication)
 
