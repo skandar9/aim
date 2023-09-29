@@ -18,7 +18,7 @@ Contact Message Handling: The application includes a contact module that allows 
 
 [Authentication](#authentication)
 
-["Store publication" function](#store-publication)
+[Store publication function](#store-publication)
 
 ["Newsletter" job](#newsletter-job)
 
@@ -28,7 +28,7 @@ Contact Message Handling: The application includes a contact module that allows 
 
 ["Store service" function](#store-subscriber)
 
-["Export to excel" function](#excel)
+["Export to excel" function](#exportToExcel)
 
 ["Forms" management using API](#forms-api)
 
@@ -119,9 +119,9 @@ public function login (Request $request)
 
 [🔝 Back to contents](#contents)
 
-## Storing a Publication (store-publication)
+## store-publication
 
-The `store` function in the `PublicationController.php` file is responsible for handling the storage of a publication based on the incoming request.
+app\Http\Controllers\Dashboard\PublicationController.php:
 
 ```php
 public function store(Request $request)
@@ -166,9 +166,10 @@ I used various validation rules, such as ensuring that the `title` field is an a
  
 The function then proceeds to upload the image file using the [upload_file function](#upload-file), which takes the `image` from the request, specifies the file destination directory as `posts_images`, and returns the path of the uploaded image.
 
-If the $request object has a truthy value for the `subscribe` field, it executes the `dispatch()` method on the `Newsletter` class, passing *$post->id* as an argument.
+If the *$request* object has a truthy value for the `subscribe` field, it executes the `dispatch()` method on the `Newsletter` class, passing *$post->id* as an argument.
 - Newsletter::dispatch($post->id): This line call a static method named `dispatch()` included with    
   ["Newsletter" job](#newsletter-job) class.
+
 ### **upload-file**
 
 app\helpers.php:
@@ -417,7 +418,7 @@ The function uses the `firstOrCreate()` method on the `Subscription` model. This
 
 [🔝 Back to contents](#contents)
 
-### **excel**
+### **exportToExcel**
 
 app\Http\Controllers\Dashboard\FormController.php:
 
@@ -591,84 +592,32 @@ Make sure to define the necessary routes and configure the environment variables
 app\Http\Controllers\Api\PostController.php:
 
 ```php
-public function forms(Request $request)
+public function latest_news(Request $request)
 {
     $request->validate([
-        'name'           => ['required', 'string'],
-        'type'           => ['required', 'in:volunteer,risk,join_ind,join_org'],
-        'data'           => ['required', 'array'],
-        'data.*'         => ['array'],
-        'data.*.name'    => ['required', 'string'],
-        'data.*.value'   => ['required'],
+        'post_id' => ['exists:posts,id'],
     ]);
 
-    if (($request->type == 'join_ind' || $request->type == 'join_org') && env('APP_JOIN_ENABLE', 1) == 0)
-        throw new BadRequestException();
+    $q = Post::orderBy('date','desc')->take(3);
 
-    if ($request->type == 'volunteer' && env('APP_VOLUNTEER_ENABLE', 1) == 0)
-        throw new BadRequestException();
-
-    if ($request->type == 'risk' && env('APP_AT_RISK_ENABLE', 1) == 0)
-        throw new BadRequestException();
-
-
-    $data = [];
-    foreach ($request->data as $ind => $arr) {
-        if ($request->hasFile("data.$ind.value"))
-            $value = upload_file($arr['value'], 'file', 'applications_files');
-        else
-            $value = $arr['value'];
-
-        $data[] = [
-            'name' => $arr['name'],
-            'value' => $value,
-        ];
+    if ($request->post_id)
+    {
+        $post = Post::find($request->post_id);
+        $q->where('project_id', $post->project_id);
+        $q->where('id', '!=', $post->id);
     }
 
-    $data = FormParamResource::collection($data)->toArray($request);
-    $data = json_encode($data);
+    $posts = $q->get();
 
-    $form = Form::create([
-        'name' => $request->name,
-        'data' => $data,
-        'type' => $request->type,
-    ]);
-
-    $details = [
-        'name'   => $request->name,
-        'type'   => $request->type,
-        'date'   => Carbon::createFromFormat('Y-m-d H:i:s', $form->created_at)->format('Y-m-d H:i:s')
-    ];
-
-    $email_address = null;
-    if ($request->type == 'join' && env('APP_JOIN_EMAIL') != "") {
-        $email_address = env('APP_JOIN_EMAIL');
-        $details['subject'] = "Joining request";
-    }
-    if ($request->type == 'volunteer' && env('APP_VOLUNTEER_EMAIL') != "") {
-        $email_address = env('APP_VOLUNTEER_EMAIL');
-        $details['subject'] = "Volunteering request";
-    }
-    if ($request->type == 'risk' && env('APP_AT_RISK_EMAIL') != "") {
-        $email_address = env('APP_VOLUNTEER_EMAIL');
-        $details['subject'] = "At risk request";
-    }
-
-    if ($email_address) {
-        $email = new ApplicationMail($details);
-        $email->subject($details['subject']);
-        Mail::to($email_address)->send($email);
-    }
-
-    return response()->json(new FormResource($form), 201);
+    return PostResource::collection($posts);
 }
 ```
 The `latest_news` method in the `PostController` class is responsible for retrieving the latest news posts from the database and returning them as a collection of `PostResource` objects.
 
-It called from this route that I defined into routes\api.php file:
+It called from this route that I defined into `routes\api.php` file:
 
 ```php
-Route::post('forms', [FormController::class, 'forms'])->name('forms');
+Route::get('/latest_news', [PostController::class, 'latest_news'])->name('posts.latest_news');
 ```
 
 The `latest_news` method performs the following tasks:
@@ -704,7 +653,7 @@ Contact management, handles contact form submissions, validates user input, send
 ```php
 Route::post('contact', [ContactController::class, 'contact']);
 ```
-First, I defined 'contact' API route to handle the submission of a contact form. It listens for a '/contact' URL and maps it to the 'contact' method of the *'ContactController'* class.
+First, I defined 'contact' API route to handle the submission of a contact form. It listens for a *'/contact'* URL and maps it to the 'contact' method of the *'ContactController'* class.
 
 ```php
 class ContactController extends Controller
@@ -746,11 +695,15 @@ To ensure successful email sending, I took the following steps:
 
 2. Set Recipient Email: In the `.env` file, I replaced the placeholder value for `MAIL_TO` with the actual email address where I wanted to receive the contact messages.
 
-3. Configured Email Template: I created an email template or used an existing one to format the content of the email. This template includes the necessary information such as the subject, sender details, and the message content.
+3. Configured Email Template: I created an email template or used an existing one to format the content of the email. This template includes the necessary information such as the *subject*, *sender* *details*, and the *message content*.
 
-4. Used the 'Mail' facade: To send the email, I utilized the 'Mail' facade provided by Laravel. I invoked the `send` method on the `Mail` facade and passed it an instance of the `ContactMail` class (which represents the email to be sent). The recipient email address is specified through the `MAIL_TO` environment variable.
+4. Used the 'Mail' facade: To send the email, I utilized the 'Mail' facade provided by Laravel. I invoked the `send` method on the `Mail` facade and passed it an instance of the [ContactMail](#ContactMail) class (which represents the email to be sent). The recipient email address is specified through the `MAIL_TO` environment variable.
 
 By following these steps, I ensured that the email sending process was properly configured and ready to send emails to the desired recipient using the specified mail driver.
+
+### **ContactMail**
+
+app\Mail\ContactMail.php:
 
 ```php
 class ContactMail extends Mailable
@@ -833,7 +786,7 @@ The footer section includes an unsubscribe link.
 
 The `CKEditor` library is used to enhance the text editing capabilities of the contact form's description field. `CKEditor` is a popular WYSIWYG (What You See Is What You Get) text editor that allows users to format and style their text easily.
 
-(/images/Ckeditor.png)
+[Ckeditor](/images/Ckeditor.png)
 
 resources\views\dashboard\publication_create.blade.php:
 
