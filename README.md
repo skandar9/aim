@@ -13,7 +13,8 @@ Subscription Management: The application includes a subscription module that ena
 Team Member Management: The application allows the management of team members within the organization. It provides endpoints to create, retrieve, update, and delete team member information. The team members can be categorized into board members and general team members.
 
 Contact Message Handling: The application includes a contact module that allows users to send messages to the organization. It provides a form for users to enter their name, email, phone number, and message. The messages are securely sent via email to the organization's designated email address for further communication.
-## Contents [contains parts of my code]
+## Contents
+### (Parts of my code)
 
 [Authentication](#authentication)
 
