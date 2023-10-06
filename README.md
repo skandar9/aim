@@ -1,9 +1,10 @@
+Project overview:
 An Iraqi voluntary organization aiming to protect the rights of minorities
 It includes a collection of projects, news and reports.
 You can subscribe to receive the latest news from the organization
 Visitors to the organization’s website can also join them to contribute with individuals or groups or send volunteer requests. It also allows those who suffer from a violation of their freedom and rights to apply for protection.
 
-Project Description:
+
 It includes features such as user authentication, subscription management, team member management, and contact message handling.
 
 User Authentication: The application allows users to register, log in, and manage their accounts. It provides secure authentication mechanisms to ensure user privacy and data protection.
@@ -13,8 +14,17 @@ Subscription Management: The application includes a subscription module that ena
 Team Member Management: The application allows the management of team members within the organization. It provides endpoints to create, retrieve, update, and delete team member information. The team members can be categorized into board members and general team members.
 
 Contact Message Handling: The application includes a contact module that allows users to send messages to the organization. It provides a form for users to enter their name, email, phone number, and message. The messages are securely sent via email to the organization's designated email address for further communication.
+
+
+> :warning: **Warning:** This contents below ↓ contains just parts of my code.
+>                        You can access my full project files by clone it from my GitLab repository
+>                        (requires asking for my permissions  to grant you access to it)
+>                        https://gitlab.com/skandar.s1998/aim 
+
 ## Contents
-(Parts of my code)
+(contains descriptive parts of my code)
+
+[Project actions and progress(graph)](#project-graph)
 
 [Authentication](#authentication)
 
@@ -34,13 +44,22 @@ Contact Message Handling: The application includes a contact module that allows 
 
 ["latest_news" API](#latest-news)
 
-["Contact" management](#contact)
+["Contact" management](#contact-management)
 
 ["Ckeditor" (text editor) functionality (dashboard)](#Ckeditor)
 
 ["Subscriber" modal (dashboard)](#add-subscriber-modal)
 
 ["loadImage" JavaScript function (dashboard)](#loadImage)
+
+### **project-graph**
+
+This graph diagram represents the actions and progress for the project.
+
+![App Logo](/images/graph(1).png)
+![App Logo](/images/graph(2).png)
+
+[🔝 Back to contents](#contents)
 
 ### **authentication**
 
@@ -121,7 +140,7 @@ public function login (Request $request)
 
 ## store-publication
 
-app\Http\Controllers\Dashboard\PublicationController.php:
+`app\Http\Controllers\Dashboard\PublicationController.php`
 
 ```php
 public function store(Request $request)
@@ -159,7 +178,7 @@ The `store` function validates the request data, uploads the image and files if 
 It called from the `/latest_news` route, which is defined in the `routes\web.php` file as follows:
 
 ```php
-Route::get('/latest_news', [PostController::class, 'latest_news'])->name('posts.latest_news');
+Route::Resource('/dashboard/publications', PublicationController::class)->except(['show']);
 ```
 
 I used various validation rules, such as ensuring that the `title` field is an array, the `title.ar` and `title.en` fields are required when 'title' is present, the `image` field is required and should be an image file, the `project_id` field specifies that the 'project_id' value must exist in the projects table's id column.
@@ -167,12 +186,12 @@ I used various validation rules, such as ensuring that the `title` field is an a
 The function then proceeds to upload the image file using the [upload_file function](#upload-file), which takes the `image` from the request, specifies the file destination directory as `posts_images`, and returns the path of the uploaded image.
 
 If the *$request* object has a truthy value for the `subscribe` field, it executes the `dispatch()` method on the `Newsletter` class, passing *$post->id* as an argument.
-- Newsletter::dispatch($post->id): This line call a static method named `dispatch()` included with    
-  ["Newsletter" job](#newsletter-job) class.
+- Newsletter::dispatch($post->id): This line call a static method named `dispatch()`
+   included with ["Newsletter" job](#newsletter-job) class.
 
 ### **upload-file**
 
-app\helpers.php:
+`app\helpers.php`
 
 ```php
 function upload_file($request_file, $prefix, $folder_name)
@@ -204,7 +223,7 @@ The `upload_file` function is placed within the app helper class, which provides
 
 ### **newsletter-job**
 
-app\Jobs\Newsletter.php:
+`app\Jobs\Newsletter.php`
 
 ```php
 class Newsletter implements ShouldQueue
@@ -280,7 +299,7 @@ The `handle()` method is the main method of the `Newsletter` job class, and it i
 
 ### **change-settings**
 
-app\Http\Controllers\FormController.php:
+`app\Http\Controllers\FormController.php`
 
 ```php
 public function change_settings(Request $request)
@@ -358,7 +377,7 @@ The `setEnv` function performs the following tasks:
 [🔝 Back to contents](#contents)
 ### Adding 'date' Column to 'posts' Table
 
-database\migrations\2023_06_04_115214_add_date_to_posts_table.php:
+`database\migrations\2023_06_04_115214_add_date_to_posts_table.php`
 
 The migration file is responsible for adding a new column called 'date' to the 'posts' table in the database.
 
@@ -391,7 +410,7 @@ To manage database schema changes and meet the schema requirements, I used this 
 
 ### **store-subscriber**
 
-app\Http\Controllers\SubscribeController.php:
+`app\Http\Controllers\SubscribeController.php`
 
 ```php
 public function store(Request $request)
@@ -420,7 +439,7 @@ The function uses the `firstOrCreate()` method on the `Subscription` model. This
 
 ### **exportToExcel**
 
-app\Http\Controllers\Dashboard\FormController.php:
+`app\Http\Controllers\Dashboard\FormController.php`
 
 ```php
 public function exportToExcel($type)
@@ -462,7 +481,7 @@ To export data to Excel files, I used `maatwebsite/excel` package. This package 
 
 #### forms-api
 
-app\Http\Controllers\Api\FormController.php:
+`app\Http\Controllers\Api\FormController.php`
 
 ```php
 public function forms(Request $request)
@@ -589,7 +608,7 @@ Make sure to define the necessary routes and configure the environment variables
 
 #### latest-news
 
-app\Http\Controllers\Api\PostController.php:
+`app\Http\Controllers\Api\PostController.php`
 
 ```php
 public function latest_news(Request $request)
@@ -646,7 +665,7 @@ The `latest_news` method performs the following tasks:
 
 [🔝 Back to contents](#contents)
 
-### **contact**
+### **contact-management**
 
 Contact management, handles contact form submissions, validates user input, sends customized email notifications. 
 
@@ -703,7 +722,7 @@ By following these steps, I ensured that the email sending process was properly 
 
 ### **ContactMail**
 
-app\Mail\ContactMail.php:
+`app\Mail\ContactMail.php`
 
 ```php
 class ContactMail extends Mailable
@@ -727,7 +746,7 @@ The *$user_details* property is a public variable that holds the user details pa
 
 The `build` method is called internally when the email needs to be prepared for sending. It returns the view `mails.contact` that will be used as the email's body.
 
-resources\views\mails\contact.blade.php:
+`resources\views\mails\contact.blade.php`
 
 ```html
 <div style="margin: 0; font-family: 'Montserrat', sans-serif;">
@@ -788,7 +807,7 @@ The `CKEditor` library is used to enhance the text editing capabilities of the c
 
 [Ckeditor](/images/Ckeditor.png)
 
-resources\views\dashboard\publication_create.blade.php:
+`resources\views\dashboard\publication_create.blade.php`
 
 ```html
 <x-layouts.dashboard>
@@ -858,13 +877,13 @@ The CKEditor instance is initialized using the `CKEDITOR.replace` function. It t
    - `filebrowserUploadUrl`: Specifies the URL where the uploaded file will be sent for processing. In this case, it uses the `uploadUrl` variable concatenated with the CSRF token (`_token`) for security.
    - `filebrowserUploadMethod`: Specifies the method to use when uploading the file. The value `'form'` indicates that the file will be uploaded via form submission.
 
-In the route file (`routes/web.php`), there is a route defined for handling the file upload. It specifies that when a POST request is made to the `ckeditor/image_upload` endpoint, it should be handled by the `upload` method of the `CkeditorController` class. The route is named `upload` using the `name` method.
+In the route file (`routes/web.php`), there is a route defined for handling the file upload. It specifies that when a POST request is made to the `ckeditor/image_upload` endpoint, it should be handled by the [upload method](#upload-image(CKEditor)) of the `CkeditorController` class. The route is named `upload` using the `name` method.
 ```php
 Route::post('ckeditor/image_upload', [CkeditorController::class, 'upload'])->name('upload');
 ```
-### **upload**
+### **upload-image(CKEditor)**
 
-app\Http\Controllers\Dashboard\CkeditorController.php:
+`app\Http\Controllers\Dashboard\CkeditorController.php`
 
 ```php
 public function upload(Request $request)
@@ -950,9 +969,9 @@ resources\views\dashboard\subscribers.blade.php:
 
 ### **loadImage**
 
-(/images/loadImage.png)
+[logo](/images/loadImage.png)
 
-resources\views\dashboard\media_create.blade.php:
+`resources\views\dashboard\media_create.blade.php`
 
 ```html
 <x-layouts.dashboard>
