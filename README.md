@@ -806,7 +806,7 @@ The footer section includes an unsubscribe link.
 
 The `CKEditor` library is used to enhance the text editing capabilities of the contact form's description field. `CKEditor` is a popular WYSIWYG (What You See Is What You Get) text editor that allows users to format and style their text easily.
 
-[Ckeditor](/images/Ckeditor.png)
+[App Logo](/images/Ckeditor.png)
 
 `resources\views\dashboard\publication_create.blade.php`
 
@@ -970,7 +970,7 @@ resources\views\dashboard\subscribers.blade.php:
 
 ### **loadImage**
 
-[logo](/images/loadImage.png)
+[App Logo](/images/loadImage.png)
 
 `resources\views\dashboard\media_create.blade.php`
 
