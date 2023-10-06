@@ -17,9 +17,10 @@ Team Member Management: The application allows the management of team members wi
 Contact Message Handling: The application includes a contact module that allows users to send messages to the organization. It provides a form for users to enter their name, email, phone number, and message. The messages are securely sent via email to the organization's designated email address for further communication.
 
 
+
 > :warning: **Warning:** This contents below ↓ contains just parts of my code.
 >                        You can access my full project files by clone it from my GitLab repository
->                        (requires asking for my permissions  to grant you access to it)
+>                        (requires asking for my permissions  to grant you access to it):
 >                        https://gitlab.com/skandar.s1998/aim 
 
 ## Contents
@@ -225,6 +226,12 @@ The `upload_file` function is placed within the app helper class, which provides
 ### **newsletter-job**
 
 `app\Jobs\Newsletter.php`
+
+Using this command: 
+```cmd
+php artisan make:job Newsletter
+``` 
+I created This job
 
 ```php
 class Newsletter implements ShouldQueue
