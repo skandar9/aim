@@ -492,7 +492,7 @@ The `setEnv` function performs the following tasks:
 
 [🔝 Back to contents](#contents)
 
-### Adding 'date' Column to 'posts' Table
+### **add-date-to-posts-table**
 
 `database\migrations\2023_06_04_115214_add_date_to_posts_table.php`
 
