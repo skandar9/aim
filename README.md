@@ -5,17 +5,9 @@ It includes a collection of projects, news and reports.
 You can subscribe to receive the latest news from the organization
 Visitors to the organization’s website can also join them to contribute with individuals or groups or send volunteer requests. It also allows those who suffer from a violation of their freedom and rights to apply for protection.
 
+It includes features such as user authentication, subscription management, news management, team member management, contact message handling and more.
 
-It includes features such as user authentication, subscription management, team member management, and contact message handling.
-
-User Authentication: The application allows users to register, log in, and manage their accounts. It provides secure authentication mechanisms to ensure user privacy and data protection.
-
-Subscription Management: The application includes a subscription module that enables users to subscribe to different plans or services. It provides functionalities to handle subscription payments, upgrade/downgrade plans, and manage user access based on their subscription status.
-
-Team Member Management: The application allows the management of team members within the organization. It provides endpoints to create, retrieve, update, and delete team member information. The team members can be categorized into board members and general team members.
-
-Contact Message Handling: The application includes a contact module that allows users to send messages to the organization. It provides a form for users to enter their name, email, phone number, and message. The messages are securely sent via email to the organization's designated email address for further communication.
-
+I have developed an admin control panel using the Material Dashboard template and created APIs to provide data to the frontend side.
 
 
 > :warning: **Warning:** This contents below ↓ contains just parts of my code.
@@ -32,25 +24,25 @@ Contact Message Handling: The application includes a contact module that allows 
 
 [Store publication function](#store-publication)
 
-["Newsletter" job](#newsletter-job)
+[Newsletter job](#newsletter-job)
 
-["Change settings" function](#change-settings)
+[Change settings function](#change-settings)
 
 [Create migration that add date to posts table](#add-date-to-posts-table)
 
-["Store service" function](#store-subscriber)
+[Store service function](#store-subscriber)
 
-["Export to excel" function](#exportToExcel)
+[Export to excel function](#exportToExcel)
 
-["Forms" management using API](#forms-api)
+[Forms management API](#forms-api)
 
-["latest_news" API](#latest-news)
+[latest_news API](#latest-news)
 
-["Contact" management](#contact-management)
+[Contact management](#contact-management)
 
-["Ckeditor" (text editor) functionality (dashboard)](#Ckeditor)
+[Ckeditor (text editor) functionality (dashboard)](#Ckeditor)
 
-["Subscriber" modal (dashboard)](#add-subscriber-modal)
+[Subscriber modal (dashboard)](#add-subscriber-modal)
 
 ["loadImage" JavaScript function (dashboard)](#loadImage)
 
@@ -171,9 +163,6 @@ This method handles the incoming authentication request when the login form is s
 
 `resources\views\auth\login.blade.php`
 
-The `login.blade.php` file contains the HTML markup for the login form view.
-This file is installed with the package `laravel/ui`.
-
 ```html
 <x-layouts.guest>
     <x-auth-card>
@@ -231,7 +220,8 @@ This file is installed with the package `laravel/ui`.
 </x-layouts.guest>
 ```
 
-The view is structured using custom reusable components and follows the Laravel Blade templating syntax to render dynamic content and handle form submissions.
+The `login.blade.php` file contains the HTML markup for the login form view.
+This file is installed with the package `laravel/ui`.
 
 [🔝 Back to contents](#contents)
 
@@ -250,6 +240,12 @@ This method defines the validation rules for the login request. It specifies tha
 This method attempts to authenticate the user using the provided credentials. It first ensures that the request is not rate limited by calling the `ensureIsNotRateLimited` method. Then, it uses the `Auth::attempt` method to attempt authentication using the `username` and `password` fields from the request. It also includes the `remember` value as a boolean parameter to determine if the user wants to be remembered for future sessions. If the authentication attempt fails, the method hits the rate limiter by calling `RateLimiter::hit` and throws a `ValidationException` with the error message `'auth.failed'`. If the authentication attempt succeeds, the rate limiter is cleared by calling `RateLimiter::clear`.
 
 The `LoginRequest` class handles the validation of the login form inputs and performs the authentication logic, including rate limiting to protect against brute-force attacks.
+
+
+When the login credentials are successfully matched, the user is redirected to the admin dashboard page:
+
+![App Logo](/images/dashboard.png)
+
 
 [🔝 Back to contents](#contents)
 
@@ -415,7 +411,6 @@ The `handle()` method is the main method of the `Newsletter` job class, and it i
    - The email subject is set to `'APP_NAME Newsletter'`, assuming that `APP_NAME` is an environment variable.
    - Finally, the email is sent using Laravel's `Mail::to()` method, specifying the subscriber's email and the `NewsMail` instance.
 
-
 [🔝 Back to contents](#contents)
 
 ### **change-settings**
@@ -496,6 +491,7 @@ The `setEnv` function performs the following tasks:
    - The modified contents of the `.env` file are written back to the file using the `file_put_contents()` function. This function overwrites the existing file contents with the updated contents.
 
 [🔝 Back to contents](#contents)
+
 ### Adding 'date' Column to 'posts' Table
 
 `database\migrations\2023_06_04_115214_add_date_to_posts_table.php`
