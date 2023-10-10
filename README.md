@@ -328,8 +328,6 @@ It takes three parameters:
 
 The function returns the relative path of the uploaded file. This path is obtained by concatenating the `$folder_name` and the unique filename generated for the file.
 
-The `upload_file` function is placed within the app helper class, which provides common functions for various tasks. These helper functions are globally accessible throughout the application without needing to import or instantiate any specific class.
-
 [🔝 Back to contents](#contents)
 
 ### **newsletter-job**
