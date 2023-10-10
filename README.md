@@ -20,8 +20,6 @@ I have developed an admin control panel using the Material Dashboard template an
 
 [Project actions and progress(graph)](#project-graph)
 
-[Dashboard side bar components](#sidebar-components)
-
 [Login to the dashboard functionality](#dashboard-login)
 
 [Store publication](#store-publication)
@@ -54,12 +52,6 @@ This graph diagram represents the actions and progress for the project.
 
 ![App Logo](/images/graph(1).png)
 ![App Logo](/images/graph(2).png)
-
-[🔝 Back to contents](#contents)
-
-### **sidebar-components**
-
-![App Logo](/images/sidebar.png)
 
 [🔝 Back to contents](#contents)
 
