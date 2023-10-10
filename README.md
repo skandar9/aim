@@ -12,7 +12,7 @@ I have developed an admin control panel using the Material Dashboard template an
 
 > :warning: **Warning:** This contents below ↓ contains just parts of my code.
 >                        You can access my full project files by clone it from my GitLab repository
->                        (requires asking for my permissions  to grant you access to it):
+>                        (requires asking for my permissions to grant you access to it):
 >                        https://gitlab.com/skandar.s1998/aim 
 
 ## Contents
@@ -20,19 +20,21 @@ I have developed an admin control panel using the Material Dashboard template an
 
 [Project actions and progress(graph)](#project-graph)
 
+[Dashboard side bar components](#sidebar-components)
+
 [Login to the dashboard functionality](#dashboard-login)
 
-[Store publication function](#store-publication)
+[Store publication](#store-publication)
 
 [Newsletter job](#newsletter-job)
 
-[Change settings function](#change-settings)
+[Change settings](#change-settings)
 
 [Create migration that add date to posts table](#add-date-to-posts-table)
 
-[Store service function](#store-subscriber)
+[Store service](#store-subscriber)
 
-[Export to excel function](#exportToExcel)
+[Export to excel](#exportToExcel)
 
 [Forms management API](#forms-api)
 
@@ -52,6 +54,12 @@ This graph diagram represents the actions and progress for the project.
 
 ![App Logo](/images/graph(1).png)
 ![App Logo](/images/graph(2).png)
+
+[🔝 Back to contents](#contents)
+
+### **sidebar-components**
+
+![App Logo](/images/sidebar.png)
 
 [🔝 Back to contents](#contents)
 
