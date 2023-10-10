@@ -3,7 +3,7 @@ Project overview:
 An Iraqi voluntary organization aiming to protect the rights of minorities
 It includes a collection of projects, news and reports.
 You can subscribe to receive the latest news from the organization
-Visitors to the organization’s website can also join them to contribute with individuals or groups or send volunteer requests. It also allows those who suffer from a violation of their freedom and rights to apply for protection.
+visitors to the organization’s website can also join them to contribute with individuals or groups or send volunteer requests. It also allows those who suffer from a violation of their freedom and rights to apply for protection.
 
 It includes features such as user authentication, subscription management, news management, team member management, contact message handling and more.
 
